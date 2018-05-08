@@ -14,14 +14,13 @@
 
 package com.liferay.docs.amf.registration.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.liferay.docs.amf.registration.dto.AmfRegistrationLogDTO;
 import com.liferay.docs.amf.registration.model.AmfRegistrationLog;
 import com.liferay.docs.amf.registration.service.base.AmfRegistrationLogLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * The implementation of the amf registration log local service.
@@ -44,9 +43,13 @@ public class AmfRegistrationLogLocalServiceImpl
      *
      * Never reference this class directly. Always use {@link com.liferay.docs.amf.registration.service.AmfRegistrationLogLocalServiceUtil} to access the amf registration log local service.
      */
-
+	
+	/**
+	 * Saves log informations
+	 * @param AmfRegistrationLogDTO - log data 
+	 */
     public void addLog(AmfRegistrationLogDTO log) throws PortalException {
-
+    	
         AmfRegistrationLog newLog = amfRegistrationLogPersistence.create(0);
         newLog.setAdditionalInfo(log.getAdditionalInfo());
         newLog.setDateTime(log.getDateTime());
@@ -57,39 +60,84 @@ public class AmfRegistrationLogLocalServiceImpl
 
         amfRegistrationLogPersistence.update(newLog);
     }
-
+    /**
+     * Searches all logs for a specific user.
+     * @param user Id
+     * @param start log position in database 
+     * @param end log position in database
+     * @return list with founded logs
+     */
     public List<AmfRegistrationLogDTO> findLogByUserId(long userId, int start, int end) {
     	List<AmfRegistrationLog> list = amfRegistrationLogPersistence.findByUserId(userId, start, end);
         return buildDTOCollection(list);
     }
-
+    /**
+     * Searches all logs for a specific event type.
+     * @param event type
+     * @param start log position in database 
+     * @param end log position in database
+     * @return list with founded logs
+     */
     public List<AmfRegistrationLogDTO> findLogByEventType(String eventType, int start, int end) {
     	List<AmfRegistrationLog> list = amfRegistrationLogPersistence.findByEventType(eventType, start, end);
         return buildDTOCollection(list);
     }
 
+    /**
+     * Searches all logs for a specific event type and user id.
+     * @param event type
+     * @param user Id
+     * @param start log position in database 
+     * @param end log position in database
+     * @return list with founded logs
+     */
     public List<AmfRegistrationLogDTO> findLogByEventTypeAndUserId(String eventType, long userId, int start, int end) {
     	List<AmfRegistrationLog> list = amfRegistrationLogPersistence.findByEventTypeAndUserId(eventType, userId, start, end);
         return buildDTOCollection(list);
     }
-
+    
+    /**
+     * Searches all logs.
+     * @param start log position in database 
+     * @param end log position in database
+     * @return list with founded logs
+     */
     public List<AmfRegistrationLogDTO> findAllLogs(int start, int end) {
     	List<AmfRegistrationLog> list = amfRegistrationLogPersistence.findAll(start, end);
         return buildDTOCollection(list);
     }
-
+    /**
+     * Gets the number of logs.
+     * @param quantity of logs
+     */
     public int countAllLogs(){
         return amfRegistrationLogPersistence.countAll();
     }
 
+    /**
+     * Gets the number of logs for a specific user id.
+     * @param user id
+     * @param quantity of logs
+     */
     public int countLogsByUserId(long userId){
         return amfRegistrationLogPersistence.countByUserId(userId);
     }
 
+    /**
+     * Gets the number of logs for a specific event type.
+     * @param event type
+     * @param quantity of logs
+     */
     public int countLogsByEventType(String eventType){
         return amfRegistrationLogPersistence.countByEventType(eventType);
     }
 
+    /**
+     * Gets the number of logs for a specific event type and user id.
+     * @param event type
+     * @param user id
+     * @param quantity of logs
+     */
     public int countLogsByEventTypeAndUserId(String eventType, long userId){
         return amfRegistrationLogPersistence.countByEventTypeAndUserId(eventType, userId);
     }
